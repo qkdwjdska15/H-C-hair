@@ -1,0 +1,16 @@
+package controller;
+
+import model.customerVO;
+
+public class CustomerDAO {
+
+	//신규 고객 등록
+	public customerVO getCustomerRegiste(customerVO cVo) throws Exception{
+		
+		//데이터 처리를 위한 SQL문
+		StringBuffer sql = new StringBuffer();
+		sql.append("insert into schoolchild");
+		sql.append("(c_code,c_name,c_gender,c_phone,c_age,c_address,c_tiket_rating,c_expiration_date,c_tiket_sales)");
+		
+	}
+}

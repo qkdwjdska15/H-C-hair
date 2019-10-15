@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+   prefHeight="280" prefWidth="300">
+   <VBox>
+      <VBox>
+         <padding>
+            <Insets top="10" right="10" bottom="10" left="10" />
+         </padding>
+
+         <children>
+            <Label text="이름" />
+            <TextField fx:id="txtName" prefWidth="170" />
+
+            <Label text="성별" />
+            <TextField fx:id="txtGender" prefWidth="170" />
+
+            <Label text="전화번호 " />
+            <TextField fx:id="txtPhone" prefWidth="170" />
+
+            <Label text="생년월일" />
+
+            <TextField fx:id="txtBirth" prefWidth="170" />
+
+            <Label text="주소 " />
+            <TextField fx:id="txtAddress" prefWidth="170" />
+            
+            <Label text="ID" />
+            <TextField fx:id="txtID" prefWidth="170" />
+            <Button fx:id="btnCheck">중복 확인</Button>
+
+            <Label text="PW" />
+            <TextField fx:id="txtPW" prefWidth="170" />
+
+            <Label text="PW확인" />
+            <TextField fx:id="txtPWcheck" prefWidth="170" />
+            <HBox>
+               <padding>
+                  <Insets top="30" right="20" bottom="20" left="30" />
+               </padding>
+               <Button fx:id="btnEnter"> 등록</Button>
+
+               <Button fx:id="btnClose"> 닫기</Button>
+            </HBox>
+
+
+         </children>
+
+
+      </VBox>
+
+   </VBox>
+   <VBox>
+
+      <HBox>
+         <spacing>10</spacing>
+         <padding>
+            <Insets top="10" left="350" />
+         </padding>
+
+         <fx:define>
+            <ToggleGroup fx:id="nameGroup" />
+
+         </fx:define>
+         <children>
+            <RadioButton fx:id="rbName" userData="이름" text="이름"
+               toggleGroup="$nameGroup" />
+
+         </children>
+         <fx:define>
+            <ToggleGroup fx:id="phoneGroup" />
+         </fx:define>
+         <children>
+            <RadioButton fx:id="rbPhone" userData="전화번호" text="전화번호"
+               toggleGroup="$phoneGroup" />
+         </children>
+
+
+
+         <TextField prefHeight="10" prefWidth="100" />
+         <Button fx:id="btnSearch"> 찾기 </Button>
+         <Button fx:id="btnAll"> 전체 </Button>
+
+      </HBox>
+      <HBox>
+         <padding>
+            <Insets top="20" right="20" bottom="20" left="240" />
+         </padding>
+
+         <TableView fx:id="talbeView" prefHeight="290"
+            prefWidth="450">
+
+
+         </TableView>
+      </HBox>
+      <VBox>
+         <padding>
+            <Insets left="570" />
+         </padding>
+         <HBox>
+            <Button fx:id="btnEnter"> 등록 </Button>
+
+            <Button fx:id="btnChange"> 수정</Button>
+
+            <Button fx:id="btnDelete"> 삭제</Button>
+
+         </HBox>
+
+      </VBox>
+
+
+   </VBox>
+</AnchorPane>

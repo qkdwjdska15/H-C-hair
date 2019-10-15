@@ -1,0 +1,28 @@
+package controller;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+
+public class LoginController implements Initializable {
+@FXML
+private TextField txtId;//아이디 입력 텍스트필드
+@FXML
+private TextField txtPw;//비밀번호 입력 텍스트 필드
+@FXML
+private Button btnAdmin;
+@FXML
+private Button btnDesigner;
+@FXML
+private Button btnCancel;
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

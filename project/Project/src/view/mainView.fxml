@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
+<BorderPane prefWidth="1500" prefHeight="700"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+	<center>
+		<TabPane tabClosingPolicy="UNAVAILABLE" fx:id="mainPane">
+			<tabs>
+				<Tab text="회원 관리" fx:id="customer">
+					<content>
+						<fx:include fx:id="coustomerTab"
+							source="customerTab.fxml" />
+					</content>
+				</Tab>
+				
+				<Tab text="디자이너 관리" fx:id="designer">
+					<content>
+						<fx:include fx:id="designerTab" source="designerTab.fxml"/>
+					</content>
+				</Tab>
+				
+				<Tab text="상품 관리" fx:id="product">
+					<content>
+						<fx:include fx:id="productTab" source="productTab.fxml"/>
+					</content>
+				</Tab>
+				
+				<Tab text="예약 관리" fx:id="reservation">
+					<content>
+						<fx:include fx:id="reservationTab" source="reservationTab.fxml"/>
+					</content>
+				</Tab>
+				
+				<Tab text="결제" fx:id="sales">
+					<content>
+						<fx:include fx:id="salesTab" source="salesTab.fxml"/>
+					</content>
+				</Tab>
+				
+				<Tab text="매출 확인" fx:id="totalsales">
+					<content>
+						<fx:include fx:id="totalsalesTab" source="totalsalesTab.fxml"/>
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+	</center>
+</BorderPane>
+

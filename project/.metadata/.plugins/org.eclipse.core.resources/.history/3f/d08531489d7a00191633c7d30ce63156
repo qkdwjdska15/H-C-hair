@@ -1,0 +1,399 @@
+package controller;
+
+import java.io.File;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.ParsePosition;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import org.apache.poi.ss.formula.functions.Today;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import model.customerVO;
+
+public class CustomerController implements Initializable {
+	@FXML
+	private TextField txtCName;// 고객 성함
+	@FXML
+	private ToggleGroup customergenderGroup;// 성별 라디오 버튼 그룹
+	@FXML
+	private RadioButton rbCMale;// 남성 라디오 버튼
+	@FXML
+	private RadioButton rbCFemale;// 여성 라디오 버튼
+	@FXML
+	private TextField txtCPhone;// 고객 전화번호
+	@FXML
+	private TextField txtCAge;// 고객 생년월일
+	@FXML
+	private TextField txtCAddress;// 고객 주소
+	@FXML
+	private ToggleGroup tiketRatingGroup;// 정액권 등급 라디오 버튼 그룹
+	@FXML
+	private RadioButton rbCGold;// Gold등급 라디오 버튼
+	@FXML
+	private RadioButton rbCSilver;// Silver등급 라디오 버튼
+	@FXML
+	private RadioButton rbCBronze;// Bronze등급 라디오 버튼
+	@FXML
+	private TextField txtCExpiration;// 정액권 만료일자 (현재일 +365)
+	@FXML
+	private TextField txtCSale;// 정액권에 따른 할인율 (골드 30% 실버 20% 브론즈 15%)
+	@FXML
+	private Button btnCustomerJoin;// 회원 등록 버튼
+	@FXML
+	private Button btnCustomerInit;// 회원 등록 초기화버튼
+	@FXML
+	private Button btnCustomerUpdate;// 회원 수정 버튼
+	@FXML
+	private Button btnCustomerDelete;// 회원 삭제 버튼
+	@FXML
+	private Button btnCustomerSave;// 회원 저장 버튼
+	@FXML
+	private ToggleGroup customerinformationGroup;// 검색하기위한 이름 ,전화번호 라디오버튼 그룹
+	@FXML
+	private RadioButton rbCName;// 회원 검색 분류 이름 라디오버튼
+	@FXML
+	private RadioButton rbCPhone;// 회원 검색 분류 전화번호 라디오버튼
+	@FXML
+	private TextField txtCSearch;// 라디오 버튼 에서 고른 분류의맞는 형식 입력하는 텍스트필드
+	@FXML
+	private Button btnCSearch;// 검색버튼 회원목록을 분류에 맞게 검색하기위해 있는 버튼
+	@FXML
+	private Button btnSaveFolder;// 저장폴더 버튼 :PDF가 저장될 폴더를 선택기능
+	@FXML
+	private TextField txtCSaveFolder;// 저장폴더 경로 보여주는 텍스트필드
+	@FXML
+	private Button btnPDF;// PDF버튼 : 저장폴더 선택후 클릭시 PDF문서 저장
+	@FXML
+	private TableView<customerVO> customerTotalView = new TableView<>();// 저장되어있는 회원목록을 보여주는 테이블뷰
+
+	customerVO costomer = new customerVO();// model.customer 인스턴스 화 --> VO
+	ObservableList<customerVO> data = FXCollections.observableArrayList();// 컬렉션 클래스의 인스턴스 생성
+	ObservableList<customerVO> selectCustomer;// 테이블에 선택한 정보 저장
+	boolean editDelete = false;// 수정할 때 확인 버튼 상태 설정
+	int selectedIndex;// 테이블에서 선택한 회원 정보 인덱스 저장.
+
+//primaryStage 스테이지 선언
+	private Stage primaryStage;
+
+	int no;// 삭제시 테이블에서 선택한 학생의 번호 저장
+	File selectedFile = null;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+		// 텍스트 필드 초기화
+		txtCExpiration.setEditable(false);// 정액권 만료일자 텍스트필드를 수정불가능
+		txtCSale.setEditable(false);// 정액권 등급에 따른 할인율 텍스트필드를 수정불가능
+		txtCSaveFolder.setEditable(false);// 폴더 저장경로 텍스트필드 수정불가
+
+		// 버튼 초기화
+		btnCustomerJoin.setDisable(true);// 회원 등록 버튼 비활성화
+		btnCustomerInit.setDisable(false);// 회원 등록창 초기화 버튼 활성화
+		btnCustomerUpdate.setDisable(true);// 회원 수정 버튼 비활성화
+		btnCustomerDelete.setDisable(true);// 회원 삭제 버튼 비활성화
+		btnPDF.setDisable(true);// PDF 버튼 비활성화
+		btnCustomerSave.setDisable(true);// 회원 수정후 등록 버튼 비활성화
+
+		// 전화번호 필드에 숫자만 입력할 수 있도록 설정.
+		DecimalFormat phoneformat = new DecimalFormat("###########");// 번호를 11자리까지만 입력할 수 있게 설정
+		txtCPhone.setTextFormatter(new TextFormatter<>(event -> {
+			if (event.getControlNewText().isEmpty()) { // 이벤트 발생시 값이 비어있으면 이벤트로 반환
+				return event;
+			}
+
+			ParsePosition parsePosition = new ParsePosition(0); // 0으로 초기화
+			// 입력한 값을 11자리로 설정해 객체로 설정
+			Object object = phoneformat.parse(event.getControlNewText(), parsePosition);
+
+			// 값이 없거나 자릿수가 인덱스의 값이 입력한 값의 길이보다 작거나 입력값이 12이면 null
+			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+					|| event.getControlNewText().length() == 12) {
+				return null;
+			} else { // 그렇지 않으면 이벤트로 반환
+				return event;
+			}
+		}));
+
+		// 생년월일 필드에 숫자만 입력할 수 있도록 설정
+		DecimalFormat ageformat = new DecimalFormat("######");// 생년월일을 6자리까지만 입력할 수 있게 설정
+		txtCAge.setTextFormatter(new TextFormatter<>(event -> {
+			if (event.getControlNewText().isEmpty()) { // 이벤트 발생시 값이 비어있으면 이벤트로 반환
+				return event;
+			}
+
+			ParsePosition parsePosition = new ParsePosition(0); // 0으로 초기화
+			// 입력한 값을 11자리로 설정해 객체로 설정
+			Object object = ageformat.parse(event.getControlNewText(), parsePosition);
+
+			// 값이 없거나 자릿수가 인덱스의 값이 입력한 값의 길이보다 작거나 입력값이 7이면 null
+			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+					|| event.getControlNewText().length() == 7) {
+				return null;
+			} else { // 그렇지 않으면 이벤트로 반환
+				return event;
+			}
+		}));
+		// 회원 등록 버튼 이벤트 핸들러
+		btnCustomerJoin.setOnAction(event -> handlerBtnCustomerJoinAction(event));
+		// 회원 초기화 버튼 이벤트 핸들러
+		btnCustomerInit.setOnAction(event -> handlerBtnCustomerInitAction(event));
+		// 회원 수정 버튼 이벤트 핸들러
+		btnCustomerUpdate.setOnAction(event -> handlerBtnCustomerUpdateAction(event));
+
+		// 회원 정액권 라디오 버튼 설정
+		// 회원 정액권 골드 등급 라디오 버튼 이벤트 핸들러
+		rbCGold.setOnAction(event -> handlerRbCGoldAction(event));
+		// 회원 정액권 실버 등급 라디오 버튼 이벤트 핸들러
+		rbCSilver.setOnAction(event -> handlerRbCSilverAction(event));
+		// 회원 정액권 브론즈 등급 라디오 버튼 이벤트 핸들러
+		rbCBronze.setOnAction(event -> handlerRbCBronzeAction(event));
+
+		// 테이블 설정.
+		customerTotalView.setEditable(false);// 테이블 수정 불가
+
+		// 테이블뷰 마우스 클릭 이벤트 핸들러
+		customerTotalView.setOnMouseClicked(event -> handlerCustomerTotalViewAction(event));
+
+		// 테이블 뷰 컬럼 이름 설정
+		TableColumn colName = new TableColumn("성 명");
+		colName.setPrefWidth(137);// 넓이 설정
+		colName.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colName.setCellValueFactory(new PropertyValueFactory<>("c_name"));
+
+		TableColumn colGender = new TableColumn("성 별");
+		colGender.setPrefWidth(137);// 넓이 설정
+		colGender.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colGender.setCellValueFactory(new PropertyValueFactory<>("c_gender"));
+
+		TableColumn colPhone = new TableColumn("전화 번호");
+		colPhone.setPrefWidth(137);// 넓이 설정
+		colPhone.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colPhone.setCellValueFactory(new PropertyValueFactory<>("c_phone"));
+
+		TableColumn colAge = new TableColumn("생년 월일");
+		colAge.setPrefWidth(137);// 넓이 설정
+		colAge.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colAge.setCellValueFactory(new PropertyValueFactory<>("c_age"));
+
+		TableColumn colAddress = new TableColumn("주 소");
+		colAddress.setPrefWidth(150);// 넓이 설정
+		colAddress.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colAddress.setCellValueFactory(new PropertyValueFactory<>("c_address"));
+
+		TableColumn colRating = new TableColumn("정액권 등급");
+		colRating.setPrefWidth(137);// 넓이 설정
+		colRating.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colRating.setCellValueFactory(new PropertyValueFactory<>("c_tiket_rating"));
+
+		TableColumn colExpirationdate = new TableColumn("정액권 만료일자");
+		colExpirationdate.setPrefWidth(137);// 넓이 설정
+		colExpirationdate.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colExpirationdate.setCellValueFactory(new PropertyValueFactory<>("c_expiration_date"));
+
+		TableColumn colSales = new TableColumn("할인율");
+		colSales.setPrefWidth(100);// 넓이 설정
+		colSales.setStyle("-fx-alignment:CENTER");// 텍스트 가운데 정렬
+		colSales.setCellValueFactory(new PropertyValueFactory<>("c_tiket_sales"));
+
+		// 테이블에 데이터 추가
+		customerTotalView.setItems(data);
+		customerTotalView.getColumns().addAll(colName, colGender, colPhone, colAge, colAddress, colRating,
+				colExpirationdate, colSales);
+
+		// 회원 전체 정보
+		customerTotalList();
+
+	}
+
+	// 테이블뷰 마우스 클릭 이벤트 핸들러
+	public void handlerCustomerTotalViewAction(MouseEvent event) {
+		if (event.getClickCount() == 2) {// 더블 클릭 하면
+
+			try {
+				selectCustomer = customerTotalView.getSelectionModel().getSelectedItems();
+				selectedIndex = selectCustomer.get(0).getC_code();
+				String selectedC_name = selectCustomer.get(0).getC_name();
+				String selectedC_gender = selectCustomer.get(0).getC_gender();
+				String selectedC_phone = selectCustomer.get(0).getC_phone();
+				String selectedC_age = selectCustomer.get(0).getC_age();
+				String selectedC_address = selectCustomer.get(0).getC_address();
+				String selectedC_tiket_rating = selectCustomer.get(0).getC_tiket_rating();
+				String selectedC_expiration_date = selectCustomer.get(0).getC_expiration_date();
+				String selectedC_tiket_sales = selectCustomer.get(0).getC_tiket_sales();
+
+				System.out.println(selectedC_name);
+				
+				// 선택한 행의 회원 정보를 읽어온다.
+				System.out.println(selectCustomer.get(0).getC_gender());
+				if(selectCustomer.get(0).getC_gender() == "남성") {
+				rbCMale.setSelected(true);
+				}else {
+					rbCFemale.setSelected(true);
+				}
+				
+				
+
+				txtCName.setText(selectedC_name);
+				txtCPhone.setText(selectedC_phone);
+				txtCAge.setText(selectedC_age);
+				txtCAddress.setText(selectedC_address);
+				txtCExpiration.setText(selectedC_expiration_date);
+				txtCSale.setText(selectedC_tiket_sales);
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
+
+	// 회원 수정 버튼 이벤트 핸들러
+	public void handlerBtnCustomerUpdateAction(ActionEvent event) {
+		try {
+			customerVO customerEdit = customerTotalView.getSelectionModel().getSelectedItem();// 선택한 객체를 저장
+			selectedIndex = customerTotalView.getSelectionModel().getSelectedIndex();// 선택된 모델의 인덱스를 읽어온다.
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	// 회원 초기화 버튼 이벤트 핸들러
+	public void handlerBtnCustomerInitAction(ActionEvent event) {
+
+		txtCName.clear();
+		customergenderGroup.selectToggle(null);
+		txtCPhone.clear();
+		txtCAge.clear();
+		txtCAddress.clear();
+		tiketRatingGroup.selectToggle(null);
+		txtCExpiration.clear();
+		txtCSale.clear();
+
+		btnCustomerJoin.setDisable(true);
+
+	}
+
+	// 회원 정액권 등급 브론즈버튼 눌럿을때 이벤트
+	public void handlerRbCBronzeAction(ActionEvent event) {
+		txtCSale.setText("15%");
+		CustomerDAO cdao = new CustomerDAO();
+		try {
+			txtCExpiration.setText(cdao.getSysdate());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		txtCSale.setEditable(false);
+		txtCExpiration.setEditable(false);
+		btnCustomerJoin.setDisable(false);// 회원 등록 버튼 활성화
+	}
+
+	// 회원 정액권 등급 실버버튼 눌렀을때 이벤트
+	public void handlerRbCSilverAction(ActionEvent event) {
+		txtCSale.setText("20%");
+		CustomerDAO cdao = new CustomerDAO();
+		try {
+			txtCExpiration.setText(cdao.getSysdate());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		txtCSale.setEditable(false);
+		txtCExpiration.setEditable(false);
+		btnCustomerJoin.setDisable(false);// 회원 등록 버튼 활성화
+	}
+
+	// 회원 정액권 등급 골드버튼 눌렀을때 이벤트
+	public void handlerRbCGoldAction(ActionEvent event) {
+		txtCSale.setText("30%");
+		CustomerDAO cdao = new CustomerDAO();
+		try {
+			txtCExpiration.setText(cdao.getSysdate());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		txtCSale.setEditable(false);
+		txtCExpiration.setEditable(false);
+		btnCustomerJoin.setDisable(false);// 회원 등록 버튼 활성화
+	}
+
+	// 회원 등록 메소드
+	public void handlerBtnCustomerJoinAction(ActionEvent event) {
+		try {
+			data.removeAll(data);
+
+			customerVO cvo = null;
+			CustomerDAO cdao = null;
+
+			cvo = new customerVO(txtCName.getText().trim(),
+					customergenderGroup.getSelectedToggle().getUserData().toString(), txtCPhone.getText().trim(),
+					txtCAge.getText().trim(), txtCAddress.getText().trim(),
+					tiketRatingGroup.getSelectedToggle().getUserData().toString(), txtCExpiration.getText().trim(),
+					txtCSale.getText().trim());
+			cdao = new CustomerDAO();
+			cdao.getCustomerRegiste(cvo);
+
+			if (cdao != null) {
+				customerTotalList(); // 전체 리스트 호출
+
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("회원 등록");
+				alert.setHeaderText(txtCName.getText() + "회원의 정보가 성공적으로 추가되었습니다");
+				alert.setContentText("회원등록완료");
+				alert.showAndWait(); // 확인 창 누르기 전까지 대기
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("회원 정보 입력");
+			alert.setHeaderText("회원 정보를 정확히 입력하세요");
+			alert.setContentText("회원 정보 누락");
+			alert.showAndWait(); // 확인 창 누르기 전까지 대기
+			customerTotalList();
+		}
+	}
+
+	// 회원 전체 리스트 메소드
+	public void customerTotalList() {
+
+		Object[][] customerTotalData;
+
+		CustomerDAO cDao = new CustomerDAO(); // CustomerDAO객체 생성
+		customerVO cVo = null;
+		ArrayList<String> customerTitle; // 회원 컬럼의 갯수를 알아낸다.
+		ArrayList<customerVO> customerList;// 회원 데이터,row를 알아낸다.
+
+		customerTitle = cDao.getColumnName(); // 컬럼네임을 읽어와 customerTitle에 저장
+		int columnCount = customerTitle.size();// 타이틀의 사이즈를 columnCount에 저장
+
+		customerList = cDao.getCustomerTotal();// 회원 전체 리스트를 읽어와 list에 저장
+		int rowCount = customerList.size();// 리스트의 사이즈를 rowCount에 저장
+
+		customerTotalData = new Object[rowCount][columnCount];// customerTotalData 배열
+
+		for (int index = 0; index < rowCount; index++) {
+			cVo = customerList.get(index);
+			data.add(cVo); // 학생의 데이터를 추가한다
+		}
+
+	}
+
+}

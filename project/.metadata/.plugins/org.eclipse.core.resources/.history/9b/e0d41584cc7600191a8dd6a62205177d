@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
+<BorderPane prefWidth="2000" prefHeight="700"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<center>
+		<TabPane tabClosingPolicy="UNAVAILABLE" fx:id="mainPane">
+			<tabs>
+				<Tab text="회원 관리" fx:id="coustomer">
+					<content>
+						<fx:include fx:id="coustomerTab"
+							source="costomerTab.fxml" />
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+	</center>
+</BorderPane>
+

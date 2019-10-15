@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+
+<AnchorPane prefWidth="1500" prefHeight="600"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReservationController">
+
+	<Label layoutX="10" layoutY="10" text="※회원정보" />
+
+	<HBox layoutX="10" layoutY="40">
+	<spacing>20</spacing>
+		<HBox>
+			<ComboBox fx:id="cbx_searchCustomerList" promptText="검색 분류 선택"
+				prefWidth="150" />
+		</HBox>
+
+		<HBox layoutX="70" layoutY="40">
+			<TextField fx:id="txtCSearch" promptText="선택한 형식에맞게 입력" />
+			<Button fx:id="btnCSearch" text="찾기" />
+			<Button fx:id="btnCALL" text="전체"/>
+		</HBox>
+	</HBox>
+
+
+	<TableView fx:id="customerTotalView" prefWidth="550"
+		prefHeight="350" layoutX="10" layoutY="70"></TableView>
+
+	<!--이선 위로 메인시스템 첫번째 칸 -->
+	<VBox layoutX="580" layoutY="10">
+		<spacing>11</spacing>
+		<Label text="※서비스정보" />
+
+		<HBox>
+			<Button fx:id="btnPALL" text="ALL" />
+			<Button fx:id="btnPCut" text="컷트" />
+			<Button fx:id="btnPFirm" text="펌" />
+			<Button fx:id="btnPDigitalSetting" text="디지털,셋팅" />
+			<Button fx:id="btnPVolumeMagic" text="볼륨매직" />
+			<Button fx:id="btnPDyeing" text="염색" />
+			<Button fx:id="btnPClinic" text="크리닉" />
+		</HBox>
+
+		<VBox alignment="CENTER_RIGHT">
+			<TableView fx:id="productTotalView" prefWidth="400"
+				prefHeight="165"></TableView>
+			<Button fx:id="btnPChoice" text="상품선택" />
+		</VBox>
+	</VBox>
+		<VBox layoutX="580" layoutY="260">
+			<spacing>5</spacing>
+			<Label text="※선택한 예약상품" />
+			<TableView fx:id="productAllTotalView"
+				prefWidth="400" prefHeight="130"></TableView>
+		</VBox>
+
+	<!--이선 위로 메인시스템 두번째 칸 -->
+
+	<VBox alignment="CENTER_LEFT" layoutX="1000" layoutY="70">
+		<padding>
+			<Insets left="10" />
+		</padding>
+		<spacing>10</spacing>
+
+		<HBox>
+			<Label text="예약일 : " prefWidth="100" />
+			<DatePicker fx:id="dpRDate"  prefWidth="150"/>
+		</HBox>
+
+		<HBox>
+			<Label text="예약시간 : " prefWidth="100"  />
+			<TextField fx:id="txtRTime" prefWidth="150" promptText="8~22사이의 숫자만 입력하세요"/>
+		</HBox>
+
+		<HBox>
+			<Label text="담당디자이너 : " prefWidth="100"/>
+			<ComboBox fx:id="cbx_designerName" promptText="선택" prefWidth="150"/>
+		</HBox>
+
+
+		<HBox alignment="CENTER">
+			<padding>
+				<Insets top="20" />
+			</padding>
+			<spacing>20</spacing>
+			<Button text="등록" fx:id="btnRJoin" />
+			<Button text="초기화" fx:id="btnRInit" />
+			<Button text="삭제" fx:id="btnRDelete" />
+		</HBox>
+
+		<!--이선 위로 메인 3번 창 -->
+
+	</VBox>
+
+	<VBox layoutX="10" layoutY="440" alignment="CENTER_LEFT">
+		<spacing>10</spacing>
+
+		<HBox>
+			<spacing>10</spacing>
+
+				<ComboBox fx:id="cbx_reservationSearchList" promptText="검색 분류 선택" prefWidth="150"/>
+
+			<HBox>
+				<padding>
+					<Insets left="10" />
+				</padding>
+				<TextField fx:id="txtRsearch" />
+				<Button fx:id="btnRsearch" text="찾기" />
+				<Button fx:id="btnRsearchALL" text="전체" />
+			</HBox>
+		</HBox>
+
+		<TableView fx:id="reservationView" prefWidth="1500"
+			prefHeight="200" />
+	</VBox>
+
+</AnchorPane>
+

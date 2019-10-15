@@ -1,0 +1,47 @@
+package controller;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import java.io.IOException;
+
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+
+public class LoginController implements Initializable {
+	@FXML
+	private TextField txtId;// 아이디 입력 텍스트필드
+	@FXML
+	private TextField txtPw;// 비밀번호 입력 텍스트 필드
+	@FXML
+	private Button btnAdmin;// 관리자 로그인 버트
+	@FXML
+	private Button btnDesigner;// 디자이너 로그인 버튼
+	@FXML
+	private Button btnCancel;// 닫기 버튼
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// 아이디 입력에서 엔터키 이벤트 적용
+		txtId.setOnKeyPressed(event -> handerTxtIdKeyPressed(event));
+	}
+
+}

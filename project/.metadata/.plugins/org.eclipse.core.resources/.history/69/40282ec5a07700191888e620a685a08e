@@ -1,0 +1,10 @@
+package model;
+
+public class customerVO {
+	private int c_code;// 고객 일련번호
+	private String c_gender;//고객 성별
+	private String c_phone;//고객 전화번호
+	private String c_age;//고객 생년월일
+	private String c_address;//고객 주소
+	//private
+}

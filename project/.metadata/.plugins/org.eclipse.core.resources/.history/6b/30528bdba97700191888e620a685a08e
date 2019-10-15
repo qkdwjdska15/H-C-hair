@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+
+<HBox prefWidth="1500" prefHeight="600"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<padding>
+		<Insets top="20" right="10" bottom="10" left="10" />
+	</padding>
+
+	<VBox prefWidth="450">
+		<padding>
+			<Insets top="10"></Insets>
+		</padding>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20"></Insets>
+			</padding>
+			<Label text="회원 관리 " />
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets top="20" bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="성함 : " fx:id="lblCName" />
+			<TextField fx:id="txtCName"  promptText="예)홍길동"/>
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="성별 : " fx:id="lblCGender" />
+			<spacing>10</spacing>
+			<fx:define>
+				<ToggleGroup fx:id="customergenderGroup" />
+			</fx:define>
+			<children>
+				<RadioButton fx:id="rbCMale" userData="남성" text="남성"
+					toggleGroup="$customergenderGroup" />
+				<RadioButton fx:id="rbCFemale" userData="여성" text="여성"
+					toggleGroup="$customergenderGroup" />
+			</children>
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="전화번호 : " fx:id="lblCPhone" />
+			<TextField fx:id="txtCPhone" promptText="예)01022224444"/>
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="생년월일 : " fx:id="lblCAge" />
+			<TextField fx:id="txtCAge" promptText="예)970601"/>
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="주소 : " fx:id="lblCAdress" />
+			<TextField fx:id="txtCAdress" promptText="예)서울시강서구공항동"/>
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<spacing>10</spacing>
+			<Label prefWidth="100" text="정액권 등급 : " fx:id="lblCTiketRating" />
+				<fx:define>
+				<ToggleGroup fx:id="tiketRatingGroup" />
+			</fx:define>
+			<children>
+				<RadioButton fx:id="rbCGold" userData="Gold" text="Gold"
+					toggleGroup="$tiketRatingGroup" />
+				<RadioButton fx:id="rbCSilver" userData="Silver" text="Silver"
+					toggleGroup="$tiketRatingGroup" />
+					<RadioButton fx:id="rbCBronze" userData="Bronze" text="Bronze"
+					toggleGroup="$tiketRatingGroup" />
+			</children>
+		</HBox>
+
+		<VBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+
+			<HBox>
+				<Label prefWidth="100" text="정액권 만료일자 : "
+					fx:id="lblCExpiration" />
+				<TextField fx:id="txtCExpiration" promptText="날짜선택" />
+			</HBox>
+
+			<HBox>
+				<padding>
+					<Insets left="100" />
+				</padding>
+				<DatePicker fx:id="dpCExpiration"></DatePicker>
+			</HBox>
+
+		</VBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="정액권 할인율 : " fx:id="lblSale" />
+			<TextField fx:id="txtSale" />
+		</HBox>
+
+
+		<HBox alignment="CENTER_LEFT">
+			<spacing>10</spacing>
+			<Button fx:id="btnCustomerJoin" text="등록" />
+			<Button fx:id="btnCustomerInit" text="초기화" />
+			<Button fx:id="btnCustomerUpdate" text="수정" />
+			<Button fx:id="btnCustomerDelete" text="삭제" />
+		</HBox>
+	</VBox>
+
+	<VBox>
+		<HBox>
+			<padding>
+				<Insets top="20" bottom="10" />
+			</padding>
+			<spacing>20</spacing>
+			<fx:define>
+				<ToggleGroup fx:id="customerinformationGroup" />
+			</fx:define>
+			<children>
+				<RadioButton fx:id="rbCName" userData="이름" text="이름"
+					toggleGroup="$customerinformationGroup" />
+				<RadioButton fx:id="rbCPhone" userData="전화번호"
+					text="전화번호" toggleGroup="$customerinformationGroup" />
+			</children>
+
+			<HBox>
+				<padding>
+					<Insets left="20" />
+				</padding>
+				<TextField fx:id="txtCSearch" promptText="선택한형식에맞는입력" />
+				<Button text="찾기" fx:id="btnCSearch" />
+			</HBox>
+
+			<HBox>
+				<padding>
+					<Insets left="450" />
+				</padding>
+				<Button text="저장폴더" fx:id="btnSaveFolder" />
+				<TextField fx:id="txtCSaveFolder" promptText="선택폴더경로" />
+				<Button text="PDF" fx:id="btnPDF" />
+			</HBox>
+
+
+		</HBox>
+
+		<TableView fx:id="customerTotalView" prefWidth="1100"
+			prefHeight="500"></TableView>
+
+	</VBox>
+
+</HBox>
+

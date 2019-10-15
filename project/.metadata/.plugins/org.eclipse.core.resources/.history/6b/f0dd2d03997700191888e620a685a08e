@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+	prefHeight="310.0" prefWidth="300.0" fx:controller="controller.LoginController">
+	<VBox alignment="CENTER">
+		<padding>
+			<Insets top="20" right="10" bottom="20" left="10" />
+		</padding>
+		<spacing>10</spacing>
+		<children>
+
+			<HBox alignment="CENTER">
+				<ImageView pickOnBounds="true" preserveRatio="true">
+					<image>
+						<Image url="file:///C:/Users/alfo9/Desktop/중요합니다/project/Project/src/image/11.PNG" />
+					</image>
+				</ImageView>
+			</HBox>
+
+
+			<Separator prefHeight="30" prefWidth="400" />
+			<HBox alignment="CENTER">
+				<Label text="ID : " />
+				<TextField fx:id="txtId" />
+
+			</HBox>
+			<HBox alignment="CENTER">
+				<Label text="PW : " />
+				<PasswordField fx:id="txtPw" />
+			</HBox>
+
+			<HBox alignment="CENTER">
+
+				<padding>
+					<Insets top="20" right="10" bottom="20" left="10" />
+				</padding>
+
+				<spacing>20</spacing>
+				<Button fx:id="btnManager" text="관리자 로그인" />
+				<Button fx:id="btnDesigner" text="디자이너 로그인" />
+				<Button fx:id="btnCancel" text="닫기" />
+
+			</HBox>
+
+
+		</children>
+
+
+
+	</VBox>
+
+
+</AnchorPane>

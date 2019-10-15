@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+
+<HBox prefWidth="1500" prefHeight="600"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<padding>
+		<Insets top="20" right="10" bottom="10" left="10" />
+	</padding>
+
+	<VBox prefWidth="450">
+		<padding>
+			<Insets top="10"></Insets>
+		</padding>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20"></Insets>
+			</padding>
+			<Label text="디자이너 관리 " />
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets top="20" bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="성함 : " fx:id="lblDName" />
+			<TextField fx:id="txtDName" promptText="예)홍길동" />
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="성별 : " fx:id="lblDGender" />
+			<spacing>10</spacing>
+			<fx:define>
+				<ToggleGroup fx:id="designergenderGroup" />
+			</fx:define>
+			<children>
+				<RadioButton fx:id="rbDMale" userData="남성" text="남성"
+					toggleGroup="$designergenderGroup" />
+				<RadioButton fx:id="rbDFemale" userData="여성" text="여성"
+					toggleGroup="$designergenderGroup" />
+			</children>
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="전화번호 : " fx:id="lblDPhone" />
+			<TextField fx:id="txtDPhone" promptText="예)01044445555" />
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="생년월일 : " fx:id="lblDAge" />
+			<TextField fx:id="txtDAge" promptText="예)970601" />
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="주소 : " fx:id="lblDAdress" />
+			<TextField fx:id="txtDAdress" promptText="예)서울시강서구공항동" />
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="ID : " fx:id="lblDId" />
+			<TextField fx:id="txtDId" promptText="8~16글자" />
+			<Button fx:id="btnDIdOverlap" text="중복체크" />
+		</HBox>
+
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="PW : " fx:id="lblDPw" />
+			<TextField fx:id="txtDPw" promptText="8~16글자" />
+		</HBox>
+
+		<HBox>
+			<padding>
+				<Insets bottom="20" />
+			</padding>
+			<Label prefWidth="100" text="PW 확인 : " fx:id="lblDPwRepeat" />
+			<TextField fx:id="txtDPwRepeat" promptText="8~16글자" />
+		</HBox>
+
+		<HBox alignment="CENTER_LEFT">
+			<spacing>10</spacing>
+			<Button fx:id="btnDesignerJoin" text="등록" />
+			<Button fx:id="btnDesignerInit" text="초기화" />
+			<Button fx:id="btnDesignerUpdate" text="수정" />
+			<Button fx:id="btnDesignerDelete" text="삭제" />
+			<Button fx:id="btnDesignerCancel" text="닫기" />
+		</HBox>
+	</VBox>
+
+	<VBox>
+		<HBox>
+			<padding>
+				<Insets top="20" bottom="10" />
+			</padding>
+			<spacing>20</spacing>
+			<fx:define>
+				<ToggleGroup fx:id="designerinformationGroup" />
+			</fx:define>
+			<children>
+				<RadioButton fx:id="rbDName" userData="이름" text="이름"
+					toggleGroup="$designerinformationGroup" />
+				<RadioButton fx:id="rbDPhone" userData="전화번호"
+					text="전화번호" toggleGroup="$designerinformationGroup" />
+			</children>
+
+			<HBox>
+				<padding>
+					<Insets left="20" />
+				</padding>
+				<TextField fx:id="txtCSearch" promptText="선택한형식에맞는입력" />
+				<Button text="찾기" fx:id="btnDSearch" />
+			</HBox>
+
+		</HBox>
+
+		<TableView fx:id="customerTotalView" prefWidth="1100"
+			prefHeight="500"></TableView>
+
+	</VBox>
+
+</HBox>
+

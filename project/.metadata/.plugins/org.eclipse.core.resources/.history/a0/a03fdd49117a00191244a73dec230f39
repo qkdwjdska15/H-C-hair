@@ -1,0 +1,207 @@
+package controller;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.customerVO;
+
+public class CustomerDAO {
+	// 날짜 1년뒤 계산 메소드
+	public customerVO getExpiration(customerVO cVo) throws Exception {
+		// 데이터 처리를 위한 SQL문
+		StringBuffer sql = new StringBuffer();
+		sql.append("select TO_CHAR(sysdate+365) from dual");
+		
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		customerVO retval = null;
+		
+		con = DBUtil.getConnection();
+		pstmt = con.prepareStatement(sql.toString());
+		
+		int i = pstmt.executeUpdate();
+
+		retval = new customerVO();
+		try {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+
+		} catch (SQLException e) {
+		}
+	}
+	return retval;
+		
+		
+	}
+
+	// 신규 고객 등록
+	public customerVO getCustomerRegiste(customerVO cVo) throws Exception {
+
+		// 데이터 처리를 위한 SQL문
+		StringBuffer sql = new StringBuffer();
+		sql.append("insert into customer");
+		sql.append(" (c_code,c_name,c_gender,c_phone,c_age,c_address,c_tiket_rating,c_expiration_date,c_tiket_sales)");
+		sql.append(" values (customer_seq.nextval,?,?,?,?,?,?,TO_CHAR(sysdate+365),?)");
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		customerVO retval = null;
+
+		try {
+			// DBUtil 이라는 클래스의 getConnenction()메소드로 데이터베이스와 연결
+			con = DBUtil.getConnection();
+
+			// 입력받은 학생 정보를 처리하기 위하여 SQL문장 생성
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, cVo.getC_name());
+			pstmt.setString(2, cVo.getC_gender());
+			pstmt.setString(3, cVo.getC_phone());
+			pstmt.setString(4, cVo.getC_age());
+			pstmt.setString(5, cVo.getC_address());
+			pstmt.setString(6, cVo.getC_tiket_rating());
+			pstmt.setString(7, cVo.getC_tiket_sales());
+
+			// SQL문을 수행 후 처리 결과 얻어온다.
+			int i = pstmt.executeUpdate();
+
+			retval = new customerVO();
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+
+			} catch (SQLException e) {
+			}
+		}
+		return retval;
+	}
+
+	// 데이터베이스에서 회원 테이블 컬럼의 갯수
+	public ArrayList<String> getColumnName() {
+
+		ArrayList<String> columnName = new ArrayList<String>();
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from customer");
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		// ResultSetMetaData 객체 변수 선언
+		ResultSetMetaData rsmd = null;
+
+		try {
+
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql.toString());
+			rs = pstmt.executeQuery();
+			rsmd = rs.getMetaData();
+			int cols = rsmd.getColumnCount();
+
+			for (int i = 1; i <= cols; i++) {
+				columnName.add(rsmd.getCatalogName(i));
+			}
+
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException se) {
+			}
+		}
+		return columnName;
+
+	}
+
+	// 회원 전체 리스트
+	public ArrayList<customerVO> getCustomerTotal() {
+
+		ArrayList<customerVO> list = new ArrayList<customerVO>();
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from customer order by c_code desc ");
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		customerVO cVo = null;
+
+		try {
+
+			// DBUtil이라는 클래스의 getConnection()메소드로 데이터베이스와 연결
+			con = DBUtil.getConnection();
+
+			// 회원 정보를 삭제하기 위하여 SQL문장 생성
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery(); // ResultSet에 결과값을 넣는다
+
+			while (rs.next()) { // 각 객체에 결과값을 넣는다
+				cVo = new customerVO();
+
+				cVo.setC_code(rs.getInt("c_code"));
+				cVo.setC_name(rs.getString("c_name"));
+				cVo.setC_gender(rs.getString("c_gender"));
+				cVo.setC_phone(rs.getString("c_phone"));
+				cVo.setC_age(rs.getString("c_age"));
+				cVo.setC_address(rs.getString("c_address"));
+				cVo.setC_tiket_rating(rs.getString("c_tiket_rating"));
+				cVo.setC_expiration_date(rs.getString("c_expiration_date"));
+				cVo.setC_tiket_sales(rs.getString("c_tiket_sales"));
+
+				list.add(cVo); // 다음 리스트에 결과값 추가
+			}
+
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				// 5. 데이터베이스와의 연결에 사용되었던 오브젝트 해제
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException se) {
+			}
+		}
+
+		return list;
+
+	}
+
+}
